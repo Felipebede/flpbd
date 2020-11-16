@@ -113,71 +113,7 @@ public class UsuarioService implements UserDetailsService {
     }
 
 
-//
-//    public void cadastrarUsuarioApi() {
-//
-//
-////        "https://5e61af346f5c7900149bc5b3.mockapi.io/desafio03/employer"
-//        try {
-//            URL url = new URL("https://5e61af346f5c7900149bc5b3.mockapi.io/desafio03/employer");
-//
-//            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-//            con.setRequestMethod("GET");
-//            con.setRequestProperty("User-Agent", "Mozilla/5.0");
-//            int responseCode = con.getResponseCode();
-//            System.out.printf("COdigo resposta GET = " + responseCode);
-//            if (responseCode == HttpURLConnection.HTTP_OK) {
-//                BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-//                String inputLine;
-//                StringBuffer response = new StringBuffer();
-//                while ((inputLine = in.readLine()) != null) {
-//                    response.append(inputLine);
-//                }
-//                in.close();
-//
-//                List<UsuarioDTO> usuariosDtos = Arrays.asList(mapper.readValue(response.toString(), UsuarioDTO[].class));
-//
-//                //cadastrar setores
-//
-//                for (UsuarioDTO usuario : usuariosDtos) {
-//
-//                    Setor setor = setorRepository.findSetorByDescricao(usuario.getDepartment());
-//
-//                    if (setor != null) {
-//                        logger.info("setor ja cadastrado : " + usuario.getDepartment());
-//                    } else {
-//                        setorRepository.save(new Setor(usuario.getDepartment()));
-//                        logger.info("cadastrando setor : " + usuario.getDepartment());
-//                    }
-//                }
-//
-//                for (UsuarioDTO usuarioDTO : usuariosDtos) {
-//                    Setor setor = setorRepository.findSetorByDescricao(usuarioDTO.getDepartment());
-//
-//                    Usuario usuario = new Usuario();
-//                    usuario.setFirst_name(usuarioDTO.getFirst_name());
-//                    usuario.setLast_name(usuarioDTO.getLast_name());
-//                    usuario.setCareer(usuarioDTO.getCareer());
-//
-//                    usuario.setDepartment(setor);
-//                    usuarioRepository.save(usuario);
-//
-//                }
-//
-//
-//            } else {
-//                System.out.printf("REquest nao funcionou.");
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//    }
-
-
     public void cadastrarUsuarioApi() {
-
 
         try {
 
@@ -185,11 +121,9 @@ public class UsuarioService implements UserDetailsService {
 
             if (response != null) {
 
-
                 List<UsuarioDTO> usuariosDtos = Arrays.asList(mapper.readValue(response.toString(), UsuarioDTO[].class));
 
                 //cadastrar setores
-
                 for (UsuarioDTO usuario : usuariosDtos) {
 
                     Setor setor = setorRepository.findSetorByDescricao(usuario.getDepartment());
@@ -201,15 +135,15 @@ public class UsuarioService implements UserDetailsService {
                         logger.info("cadastrando setor : " + usuario.getDepartment());
                     }
                 }
-
+                //Cadastrar usuários
                 for (UsuarioDTO usuarioDTO : usuariosDtos) {
                     Setor setor = setorRepository.findSetorByDescricao(usuarioDTO.getDepartment());
 
                     Usuario usuario = new Usuario();
+                    usuario.setId(usuarioDTO.getId());
                     usuario.setFirst_name(usuarioDTO.getFirst_name());
                     usuario.setLast_name(usuarioDTO.getLast_name());
                     usuario.setCareer(usuarioDTO.getCareer());
-
                     usuario.setDepartment(setor);
                     usuarioRepository.save(usuario);
 
