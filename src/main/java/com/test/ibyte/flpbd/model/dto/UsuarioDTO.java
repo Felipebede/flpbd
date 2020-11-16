@@ -1,20 +1,11 @@
-package com.test.ibyte.flpbd.model;
+package com.test.ibyte.flpbd.model.dto;
 
-import javax.persistence.*;
-
-@Entity
-public class Usuario {
-    @Id
-    @Column(name = "id", updatable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UsuarioDTO {
     private int id;
-
     private String first_name;
     private String last_name;
     private String career;
-
-    @ManyToOne(optional = false)
-    private Setor department;
+    private String department;
 
 
     public int getId() {
@@ -49,11 +40,11 @@ public class Usuario {
         this.career = career;
     }
 
-    public Setor getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Setor department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 }

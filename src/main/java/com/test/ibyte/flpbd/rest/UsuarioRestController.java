@@ -1,20 +1,17 @@
 package com.test.ibyte.flpbd.rest;
 
-import java.util.List;
-
 import com.test.ibyte.flpbd.model.Usuario;
+import com.test.ibyte.flpbd.model.dto.JwtRequestDTO;
 import com.test.ibyte.flpbd.service.UsuarioService;
-
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/usuario")
+@Api(tags = "UsuarioRestController")
 public class UsuarioRestController {
 
     @Autowired
@@ -50,9 +47,15 @@ public class UsuarioRestController {
         return usuarioService.cadastrar(usuario);
     }
 
-    @PostMapping("editar")
-    private Usuario editar(@RequestBody Usuario usuario) {
-        return usuarioService.editar(usuario);
+    @PostMapping("login")
+    private String login(@RequestBody JwtRequestDTO jwtRequestDTO) {
+        return usuarioService.authenticate(jwtRequestDTO);
+    }
+
+    //desafio bonus
+    @GetMapping("cadastrar-api")
+    private void cadastrarUsuariosApi() {
+        usuarioService.cadastrarUsuarioApi();
     }
 
 }

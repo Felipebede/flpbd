@@ -1,12 +1,11 @@
 package com.test.ibyte.flpbd.repository;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.test.ibyte.flpbd.model.Usuario;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
@@ -26,7 +25,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Usuario> findAllByDepartmentId(int id);
 
     List<Usuario> findAllByDepartmentDescricao(String setor);
-
 
 
 }
