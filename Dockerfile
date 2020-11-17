@@ -3,4 +3,5 @@ RUN addgroup -S spring && adduser -S spring -G spring
 USER spring:spring
 ARG DEPENDENCY=target/*.jar
 COPY ${DEPENDENCY} flpbd.jar
-ENTRYPOINT ["java","-cp","app:app/lib/*","com.test.ibyte.flpbd.FlpbdApplication"]
+COPY ${DEPENDENCY} classes
+ENTRYPOINT ["java","-jar","/flpbd.jar"]

@@ -2,68 +2,90 @@ package com.test.ibyte.flpbd.usuario.controller;
 
 import com.test.ibyte.flpbd.model.Setor;
 import com.test.ibyte.flpbd.model.Usuario;
+import com.test.ibyte.flpbd.rest.SetorRestController;
 import com.test.ibyte.flpbd.rest.UsuarioRestController;
-import com.test.ibyte.flpbd.seguranca.JwtAuthenticationEntryPoint;
-import com.test.ibyte.flpbd.seguranca.JwtRequestFilter;
-import com.test.ibyte.flpbd.seguranca.WebSecurity;
 import com.test.ibyte.flpbd.service.SetorService;
 import com.test.ibyte.flpbd.service.UsuarioService;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.given;
-import static io.restassured.module.mockmvc.RestAssuredMockMvc.standaloneSetup;
 import static org.mockito.Mockito.when;
 
 
-@WebMvcTest
+@RunWith(JUnit4.class)
+@SpringBootTest
 class UsuarioControllerTests {
 
-    @Autowired
+    private MockMvc mockMvc;
+
+    @InjectMocks
     private UsuarioRestController usuarioRestController;
 
-    @Autowired
+    @Mock
     private UsuarioService usuarioService;
 
-    @MockBean
+    @Mock
     private SetorService setorService;
 
-    @MockBean
-    private JwtRequestFilter jwtRequestFilter;
-
-    @MockBean
-    private WebSecurity webSecurity;
-
-    @MockBean
-    private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @MockBean
-    private UserDetailsService jwtUserDetailsService;
+    @Mock
+    private SetorRestController setorRestController;
 
 
     @BeforeEach
-    public void setup() {
-        standaloneSetup(this.usuarioRestController, this.usuarioService);
+    public void init() {
+        MockitoAnnotations.initMocks(this);
+        mockMvc = MockMvcBuilders.standaloneSetup(usuarioRestController).build();
     }
+
 
     @Test
     public void retornarSucesso_BuscarUsuario() {
 
-        when(this.usuarioService.obterPorId(1)).thenReturn(new Usuario(1, "Usuario", "Teste", "Testes dev", new Setor(1, "Testes Ibyte")));
+        when(usuarioService.obterPorId(1))
+                .thenReturn(new Usuario(1, "Usuario", "Teste", "Testes dev", new Setor(1, "Testes Ibyte")));
 
+        try {
+            given().mockMvc(mockMvc)
+                    .accept(ContentType.JSON)
+                    .when()
+                    .get("/api/usuario/{id}", 1L)
+                    .then()
+                    .statusCode(HttpStatus.OK.value());
 
-        given()
-                .accept(ContentType.JSON)
-                .when()
-                .get("/api/usuario/{id}", 1L)
-                .then()
-                .statusCode(HttpStatus.OK.value());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Test
+    public void retornarErro_BuscarUsuario() {
+
+        when(usuarioService.obterPorId(999))
+                .thenReturn(null);
+
+        try {
+            given().mockMvc(mockMvc)
+                    .accept(ContentType.JSON)
+                    .when()
+                    .get("/api/usuario/{id}", 999)
+                    .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
