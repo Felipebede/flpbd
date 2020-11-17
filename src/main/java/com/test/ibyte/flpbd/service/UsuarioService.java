@@ -129,10 +129,10 @@ public class UsuarioService implements UserDetailsService {
                     Setor setor = setorRepository.findSetorByDescricao(usuario.getDepartment());
 
                     if (setor != null) {
-                        logger.info("setor ja cadastrado : " + usuario.getDepartment());
+                        logger.info("[INFO] Setor já cadastrado : " + usuario.getDepartment());
                     } else {
                         setorRepository.save(new Setor(usuario.getDepartment()));
-                        logger.info("cadastrando setor : " + usuario.getDepartment());
+                        logger.info("[INFO] Cadastrando setor : " + usuario.getDepartment());
                     }
                 }
                 //Cadastrar usuários
@@ -151,7 +151,7 @@ public class UsuarioService implements UserDetailsService {
 
 
             } else {
-                System.out.printf("REquest nao funcionou.");
+                System.out.printf("Request não funcionou.");
             }
         } catch (Exception e) {
             e.printStackTrace();

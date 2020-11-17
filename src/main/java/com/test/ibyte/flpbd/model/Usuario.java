@@ -56,4 +56,15 @@ public class Usuario {
     public void setDepartment(Setor department) {
         this.department = department;
     }
+
+    public Usuario(Integer id, String first_name, String last_name, String career, Setor department) {
+        this.id = id;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.career = career;
+        this.department = department;
+    }
+
+    public Usuario() {
+    }
 }

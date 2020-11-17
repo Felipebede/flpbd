@@ -14,6 +14,11 @@ public class Setor {
     public Setor() {
     }
 
+    public Setor(Integer id, String descricao) {
+        this.id = id;
+        this.descricao = descricao;
+    }
+
     public Setor(int id) {
         this.id = id;
     }
