@@ -7,7 +7,7 @@ public class Usuario {
     @Id
     @Column(name = "id", updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private String first_name;
     private String last_name;
@@ -17,11 +17,11 @@ public class Usuario {
     private Setor department;
 
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

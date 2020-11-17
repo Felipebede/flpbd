@@ -4,6 +4,7 @@ import com.test.ibyte.flpbd.model.Setor;
 import com.test.ibyte.flpbd.service.SetorService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,23 +19,52 @@ public class SetorRestController {
 
     @GetMapping
 //    @ApiOperation(value = "Listar Setores")
-    private List<Setor> listarTodos() {
-        return setorService.listarTodos();
+    public ResponseEntity<List<Setor>> listarTodos() {
+
+        List<Setor> setores = setorService.listarTodos();
+
+        if (setores.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(setores);
     }
 
     @GetMapping("{id}")
-    private Setor obterPorId(@PathVariable("id") int id) {
-        return setorService.obterPorId(id);
+    public ResponseEntity<Setor> obterPorId(@PathVariable("id") int id) {
+
+        Setor setor = setorService.obterPorId(id);
+
+        if (setor == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+
+        return ResponseEntity.ok(setor);
     }
 
     @PostMapping("cadastrar")
-    private Setor cadastrar(@RequestBody Setor setor) {
-        return setorService.cadastrar(setor);
+    public ResponseEntity<Setor> cadastrar(@RequestBody Setor setor) {
+        Setor setorCadastrado = setorService.cadastrar(setor);
+
+        if (setorCadastrado.getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(setor);
     }
 
-    @PostMapping("salvar")
-    private Setor salvar(@RequestBody Setor setor) {
-        return setorService.salvar(setor);
+    @PutMapping("salvar")
+    public ResponseEntity<Setor> salvar(@RequestBody Setor setor) {
+
+        Setor setorCadastrado = setorService.salvar(setor);
+
+        if (setorCadastrado.getId() == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(setor);
+
     }
 
 }

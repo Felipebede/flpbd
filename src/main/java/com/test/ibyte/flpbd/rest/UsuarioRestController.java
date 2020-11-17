@@ -5,6 +5,7 @@ import com.test.ibyte.flpbd.model.dto.JwtRequestDTO;
 import com.test.ibyte.flpbd.service.UsuarioService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,44 +19,99 @@ public class UsuarioRestController {
     private UsuarioService usuarioService;
 
     @GetMapping
-    private List<Usuario> listarTodos() {
-        return usuarioService.listarTodos();
+    public ResponseEntity<List<Usuario>> listarTodos() {
+
+        List<Usuario> usuarios = usuarioService.listarTodos();
+
+        if (usuarios == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("{id}")
-    private Usuario obterPorId(@PathVariable("id") int id) {
-        return usuarioService.obterPorId(id);
+    public ResponseEntity<Usuario> obterPorId(@PathVariable("id") int id) {
+        Usuario usuario = usuarioService.obterPorId(id);
+
+        if (usuario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuario);
     }
 
     @GetMapping("setor-id/{id_setor}")
-    private List<Usuario> obterPorSetorId(@PathVariable("id_setor") int id) {
-        return usuarioService.obterPorSetorId(id);
+    public ResponseEntity<List<Usuario>> obterPorSetorId(@PathVariable("id_setor") int id) {
+
+        List<Usuario> usuarios = usuarioService.obterPorSetorId(id);
+
+        if (usuarios == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("setor/{setor}")
-    private List<Usuario> obterPorSetorDesc(@PathVariable("setor") String setor) {
-        return usuarioService.obterPorSetor(setor);
+    public ResponseEntity<List<Usuario>> obterPorSetorDesc(@PathVariable("setor") String setor) {
+        List<Usuario> usuarios = usuarioService.obterPorSetor(setor);
+
+        if (usuarios == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarios);
+
     }
 
     @GetMapping("delete/{id}")
-    private String deletePorId(@PathVariable("id") int id) {
-        return usuarioService.deletePorId(id);
+    public ResponseEntity<String> deletePorId(@PathVariable("id") int id) {
+
+        String mensagem = usuarioService.deletePorId(id);
+
+        if (mensagem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(mensagem);
     }
 
     @PostMapping("cadastrar")
-    private Usuario cadastrar(@RequestBody Usuario usuario) {
-        return usuarioService.cadastrar(usuario);
+    public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
+
+        Usuario usuarioCadastrado = usuarioService.cadastrar(usuario);
+
+        if (usuarioCadastrado.getId() == null) {
+            return ResponseEntity.notFound().build();
+
+        }
+
+        return ResponseEntity.ok(usuarioCadastrado);
     }
 
     @PostMapping("login")
-    private String login(@RequestBody JwtRequestDTO jwtRequestDTO) {
-        return usuarioService.authenticate(jwtRequestDTO);
+    public ResponseEntity<String> login(@RequestBody JwtRequestDTO jwtRequestDTO) {
+
+        String mensagem = usuarioService.authenticate(jwtRequestDTO);
+
+        if (mensagem.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(mensagem);
     }
 
     //desafio bonus
     @GetMapping("cadastrar-api")
-    private void cadastrarUsuariosApi() {
+    public  ResponseEntity<List<Usuario>> cadastrarUsuariosApi() {
+        List<Usuario> usuariosInicio = usuarioService.listarTodos();
+
         usuarioService.cadastrarUsuarioApi();
+
+        List<Usuario> usuariosApos = usuarioService.listarTodos();
+
+        if (usuariosApos.size() < usuariosInicio.size() + 100) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(usuariosApos);
+
     }
 
 }
