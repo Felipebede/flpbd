@@ -5,6 +5,7 @@ import com.test.ibyte.flpbd.model.Setor;
 import com.test.ibyte.flpbd.repository.SetorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,4 +30,12 @@ public class SetorService {
     public Setor salvar(Setor setor) {
         return setorRepository.save(setor);
     }
+
+    
+    @Transactional
+    public String deletePorId(int id) {
+        setorRepository.deleteSetorById(id);
+        return "Setor id: " + id + " deletado com sucesso!";
+    }
+
 }
