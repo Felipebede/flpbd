@@ -1,0 +1,9 @@
+version: '3.4'
+services:
+  flpbd:
+    container_name: flpbd
+    build:
+      context: .
+      dockerfile: flpbd.Dockerfile
+    ports:
+      - "8080:8080"
