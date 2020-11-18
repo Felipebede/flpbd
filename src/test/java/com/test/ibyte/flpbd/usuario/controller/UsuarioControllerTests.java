@@ -89,4 +89,26 @@ class UsuarioControllerTests {
 
     }
 
+
+    
+    @Test
+    public void retornarErro_ListarUsuarios() {
+
+        when(usuarioService.listarTodos())
+                .thenReturn(null);
+
+        try {
+            given().mockMvc(mockMvc)
+                    .accept(ContentType.JSON)
+                    .when()
+                    .get("/api/usuario")
+                    .then()
+                    .statusCode(HttpStatus.NOT_FOUND.value());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 }

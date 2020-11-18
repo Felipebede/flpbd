@@ -99,17 +99,19 @@ public class UsuarioService implements UserDetailsService {
 
     @Transactional
     public String deletePorId(int id) {
-
         usuarioRepository.deleteUsuarioById(id);
-
         return "Usuario id: " + id + " deletado com sucesso!";
-
     }
 
+
+    //criei um cadastrar e editar pq no mundo real, geralmente, aplicam-se regras de negócio diferente para cada caso.
     public Usuario cadastrar(Usuario usuario) {
-
         return usuarioRepository.save(usuario);
+    }
 
+    
+    public Usuario editar(Usuario usuario) {
+        return usuarioRepository.save(usuario);
     }
 
 
