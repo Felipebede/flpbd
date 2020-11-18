@@ -1,10 +1,12 @@
 package com.test.ibyte.flpbd.rest;
 
 import com.test.ibyte.flpbd.model.Setor;
+import com.test.ibyte.flpbd.repository.SetorRepository;
 import com.test.ibyte.flpbd.service.SetorService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public class SetorRestController {
     private SetorService setorService;
 
     @GetMapping
-//    @ApiOperation(value = "Listar Setores")
+    // @ApiOperation(value = "Listar Setores")
     public ResponseEntity<List<Setor>> listarTodos() {
 
         List<Setor> setores = setorService.listarTodos();
@@ -38,7 +40,6 @@ public class SetorRestController {
         if (setor == null) {
             return ResponseEntity.notFound().build();
         }
-
 
         return ResponseEntity.ok(setor);
     }
@@ -65,6 +66,18 @@ public class SetorRestController {
 
         return ResponseEntity.ok(setor);
 
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deletePorId(@PathVariable("id") int id) {
+
+        String mensagem = setorService.deletePorId(id);
+
+        if (mensagem == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(mensagem);
     }
 
 }

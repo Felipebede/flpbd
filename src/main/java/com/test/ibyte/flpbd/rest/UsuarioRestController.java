@@ -4,6 +4,8 @@ import com.test.ibyte.flpbd.model.Usuario;
 import com.test.ibyte.flpbd.model.dto.JwtRequestDTO;
 import com.test.ibyte.flpbd.service.UsuarioService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +63,7 @@ public class UsuarioRestController {
 
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     public ResponseEntity<String> deletePorId(@PathVariable("id") int id) {
 
         String mensagem = usuarioService.deletePorId(id);
@@ -77,13 +79,19 @@ public class UsuarioRestController {
     public ResponseEntity<Usuario> cadastrar(@RequestBody Usuario usuario) {
 
         Usuario usuarioCadastrado = usuarioService.cadastrar(usuario);
-
         if (usuarioCadastrado.getId() == null) {
             return ResponseEntity.notFound().build();
-
         }
-
         return ResponseEntity.ok(usuarioCadastrado);
+    }
+
+    @PostMapping("editar")
+    public ResponseEntity<Usuario> editar(@RequestBody Usuario usuario) {
+        Usuario usuarioEditado = usuarioService.editar(usuario);
+        if (usuarioEditado.getId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(usuarioEditado);
     }
 
     @PostMapping("login")
@@ -99,6 +107,7 @@ public class UsuarioRestController {
 
     //desafio bonus
     @GetMapping("cadastrar-api")
+    @ApiOperation(value = "Cadastrar Usuários e setores do desafio Bônus")
     public  ResponseEntity<List<Usuario>> cadastrarUsuariosApi() {
         List<Usuario> usuariosInicio = usuarioService.listarTodos();
 
